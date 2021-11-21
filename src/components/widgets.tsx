@@ -1,6 +1,7 @@
-import { getWeek, useDate, zeroPad } from "../utils";
+import { getWeek, useDate, useHassDevice, zeroPad } from "../utils";
 import Card from "./Card";
 import "./widgets.scss";
+import config from "../config.json";
 
 export function Clock() {
     const date = useDate();
@@ -32,9 +33,13 @@ export function Clock() {
 }
 
 export function Weather() {
-    return <Card className="weather"></Card>;
+    const weatherData = useHassDevice("weather." + config.weather_name);
+
+    return <Card className="weather">Temp: {weatherData?.attributes.temperature}</Card>;
 }
 
 export function MediaPlayer() {
+    const playerData = useHassDevice("media_player." + config.media_player_name);
+    console.log(playerData);
     return <Card className="no-padding media-player"></Card>;
 }

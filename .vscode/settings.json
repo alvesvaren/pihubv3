@@ -1,8 +1,10 @@
 {
     "cSpell.words": [
         "grafana",
+        "hass",
         "homeassistant",
-        "matlistan"
+        "matlistan",
+        "svaren"
     ],
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "modifications",

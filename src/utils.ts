@@ -1,5 +1,6 @@
 import React from "react";
-import { useInterval } from "react-use";
+import { useEffectOnce, useInterval } from "react-use";
+import api, { HassEntity } from "./hassapi";
 
 export function useDate() {
     const [date, setDate] = React.useState(new Date());
@@ -9,6 +10,23 @@ export function useDate() {
         }, 1000 - new Date().getMilliseconds());
     }, 1000);
     return date;
+}
+
+export function useHassDevice(entityId: string) {
+    const [state, setState] = React.useState<HassEntity | null>(null);
+    useEffectOnce(() => {
+        const updateState = (entity: HassEntity) => {
+            setState(entity);
+        };
+        updateState(api.state[entityId]);
+
+        api.emitter.on("state_changed#" + entityId, updateState);
+        return () => {
+            api.emitter.off("state_changed#" + entityId, updateState);
+        };
+    });
+
+    return state;
 }
 
 export function zeroPad(num: number) {
