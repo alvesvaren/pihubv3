@@ -1,0 +1,21 @@
+.clock {
+    grid-area: cl;
+
+    h1 {
+        font-size: 4rem;
+        font-weight: 700;
+    }
+    h2 {
+        font-size: 2.25rem;
+        font-weight: 500;
+        opacity: 0.5;
+    }
+}
+
+.weather {
+    grid-area: we;
+}
+
+.media-player {
+    grid-area: md;
+}
