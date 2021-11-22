@@ -13,7 +13,6 @@ export function Clock() {
     const date = useDate();
 
     const weekdays = t("weekdays");
-    console.log(weekdays);
     const months = t("months");
 
     const [hours, minutes, seconds, weekday, day, month, year, week] = [
