@@ -37,8 +37,8 @@ export function Clock() {
     );
 }
 
-export function Weather() {
-    const weatherData = useHassDevice("weather." + config.weather_name);
+export function Weather(props: { entityId: string }) {
+    const weatherData = useHassDevice("weather." + props.entityId);
 
     const { humidity, temperature, wind_speed, wind_bearing, forecast } = weatherData?.attributes ?? {};
     const today = forecast?.[0] ?? {};
@@ -65,7 +65,7 @@ export function Weather() {
                 <div>
                     <span className="title">Vind:</span>
                     <span className="value">
-                        {wind_speed || "?"} km/h {getWindBearing(wind_bearing)}
+                        {wind_speed ?? "?"} km/h {getWindBearing(wind_bearing)}
                     </span>
                 </div>
             </div>
@@ -73,9 +73,9 @@ export function Weather() {
     );
 }
 
-export function MediaPlayer() {
+export function MediaPlayer(props: { entityId: string }) {
     const [realPosition, setRealPosition] = useState(0);
-    const playerData = useHassDevice("media_player." + config.media_player_name);
+    const playerData = useHassDevice("media_player." + props.entityId);
 
     const { state, attributes } = playerData ?? {};
     const { media_title, media_artist, entity_picture, media_duration, media_position, media_channel, media_position_updated_at } = attributes ?? {};
@@ -96,10 +96,7 @@ export function MediaPlayer() {
     const isLive = isNaN(realPosition) && media_duration === 0;
 
     return (
-        <Card
-            onClick={() => api.send("media_player", "media_play_pause", { entity_id: "media_player." + config.media_player_name })}
-            className="no-padding media-player"
-        >
+        <Card onClick={() => api.send("media_player", "media_play_pause", { entity_id: "media_player." + props.entityId })} className="no-padding media-player">
             <img src={"//" + config.hass_connection.host + entity_picture} alt="" />
             <div className="media-info">
                 <header>

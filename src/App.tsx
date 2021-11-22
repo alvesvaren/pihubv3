@@ -29,8 +29,8 @@ function App() {
             <div id="app">
                 <div id="widget-grid">
                     <Clock />
-                    <Weather />
-                    <MediaPlayer />
+                    <Weather entityId={config.weather_name} />
+                    <MediaPlayer entityId={config.media_player_name} />
                 </div>
                 <div className="app-bar">
                     <Card className="app-bar-card">
