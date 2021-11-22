@@ -1,0 +1,12 @@
+[Unit]
+After=network.target
+Wants=network.target
+Description=pihub v3 startup script
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/pihubv3
+ExecStart=/home/pi/pihubv3/start.sh
+
+[Install]
+WantedBy=multi-user.target
