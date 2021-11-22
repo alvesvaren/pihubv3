@@ -1,4 +1,16 @@
 {
-    "hass_token": "my_token",
-    "media_player_name": "my_player"
+    "hass_token": "my_home_assistant_token",
+    "media_player_name": "my_media_player",
+    "weather_name": "my_weather_entity",
+    "hass_connection": {
+        "host": "hass.example.com",
+        "port": 443,
+        "protocol": "wss"
+    },
+    "apps": {
+        "matlistan": { "name": "Matlistan", "imgUrl": "/logos/matlistan_icon.png", "url": "https://www.matlistan.se/recipes" },
+        "grafana": { "name": "Grafana", "imgUrl": "/logos/grafana_icon.png", "url": "https://grafana.example.com" },
+        "homeassistant": { "name": "Home Assistant", "imgUrl": "/logos/home_assistant_icon.svg", "url": "https://hass.example.com" }
+    },
+    "rss_source": "https://cors-proxy.example.com/https://news.example.com/rss"
 }
