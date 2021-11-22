@@ -1,4 +1,5 @@
 import React from "react";
+import { t } from "../utils";
 import "./weathericon.scss";
 
 export const weatherSVGs = new Set<string>([
@@ -41,7 +42,7 @@ const snowyStates = new Set<string>(["snowy", "snowy-rainy"]);
 
 const lightningStates = new Set<string>(["lightning", "lightning-rainy"]);
 
-const cardinalDirections = ["N", "NNÖ", "NÖ", "ÖNÖ", "Ö", "ÖSÖ", "SÖ", "SSÖ", "S", "SSV", "SV", "VSV", "V", "VNV", "NV", "NNV", "N"];
+const cardinalDirections = t("cardinal");
 
 const getWindBearingText = (degree: string): string => {
     const degreenum = parseInt(degree, 10);

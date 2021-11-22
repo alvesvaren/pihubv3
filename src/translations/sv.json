@@ -1,6 +1,7 @@
 {
     "weekdays": ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"],
     "months": ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    "cardinal": ["N", "NNÖ", "NÖ", "ÖNÖ", "Ö", "ÖSÖ", "SÖ", "SSÖ", "S", "SSV", "SV", "VSV", "V", "VNV", "NV", "NNV", "N"],
     "min-temp": "Lägsta",
     "max-temp": "Högsta",
     "humidity": "Luftfuktighet",
