@@ -163,7 +163,7 @@ export function NewsFeed(props: { url: string }) {
         return (
             <WebLink href={url}>
                 {title}
-                <span className="muted"> Expressen {config.feed_short_name}</span>
+                <span className="no-wrap muted"> Expressen {config.feed_short_name}</span>
             </WebLink>
         );
     } else {

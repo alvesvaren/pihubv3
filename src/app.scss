@@ -144,3 +144,9 @@ button {
     font-size: 0.8em;
     opacity: 0.6;
 }
+
+.no-wrap {
+    word-wrap: normal;
+    word-break: keep-all;
+    white-space: nowrap;
+}
