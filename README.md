@@ -1,23 +1,23 @@
 # Pihub v3
 
-Webbsida att visa på en raspberry pi touch screen som använder sig av home assistant för att hämta data och visa upp på skärmen.
+Website to show on a raspberry pi touch screen that uses home assistant to get data and show it on the screen.
 
 ![Screenshot](screenshot.png)
 
-## Installera:
+## Install:
 
-- Klona repon med `git clone https://github.com/alvesvaren/pihubv3.git`
-- Installera dependencies med `yarn install` i repo-mappen
+- Clone the repo with `git clone https://github.com/alvesvaren/pihubv3.git`
+- Download dependencies with `yarn install` inside the repo folder
 
-## Konfigurera:
+### Configure:
 
-- Kopiera `src/config-example.json` till `src/config.json` och ändra värdena i filen.
+- Copy `src/config-example.json` to `src/config.json` and change the values for your needs
 
-## Bygga:
+### Build:
 
-- Bygg projektfilerna för att det ska starta snabbare med `yarn build`
+- Build the project with `yarn build`
 
-## Använda:
+### Start:
 
-- Länka tjänstfilen med: `sudo systemctl link $PWD/pihub.service`
-- Starta samt sätt på autostart för tjänsten med: `sudo systemctl enable --now pihub.service`
+- Link the service file: `sudo systemctl link $PWD/pihub.service`
+- Start and enable autostart: `sudo systemctl enable --now pihub.service`
