@@ -13,5 +13,6 @@
         "homeassistant": { "name": "Home Assistant", "imgUrl": "/logos/home_assistant_icon.svg", "url": "https://hass.example.com" }
     },
     "lang": "en",
+    "news_change_interval": 30,
     "rss_source": "https://cors-proxy.example.com/https://news.example.com/rss"
 }

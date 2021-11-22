@@ -5,7 +5,7 @@ import api, { HassEntity } from "./hassapi";
 import svTranslation from "./translations/sv.json";
 import enTranslation from "./translations/en.json";
 
-const translations: { [lang: string]: { [key: string]: string } } = {
+const translations: { [lang: string]: { [key: string]: any } } = {
     sv: svTranslation,
     en: enTranslation,
 };

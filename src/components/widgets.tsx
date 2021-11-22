@@ -11,8 +11,9 @@ import api from "../hassapi";
 export function Clock() {
     const date = useDate();
 
-    const weekdays = [t("mon"), t("tue"), t("wed"), t("thu"), t("fri"), t("sat"), t("sun")];
-    const months = [t("jan"), t("feb"), t("mar"), t("apr"), t("may"), t("jun"), t("jul"), t("aug"), t("sep"), t("oct"), t("nov"), t("dec")];
+    const weekdays = t("weekdays");
+    console.log(weekdays);
+    const months = t("months");
 
     const [hours, minutes, seconds, weekday, day, month, year, week] = [
         date.getHours(),
@@ -144,7 +145,7 @@ export function NewsFeed(props: { url: string }) {
     };
 
     useEffectOnce(() => {
-        const timeoutId = window.setInterval(fetchNews, 40000);
+        const timeoutId = window.setInterval(fetchNews, config.news_change_interval * 1000);
         fetchNews();
         return () => window.clearTimeout(timeoutId);
     });
