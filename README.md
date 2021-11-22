@@ -10,5 +10,5 @@ Kopiera `src/config-example.json` till `src/config.json` och ändra värdena i f
 
 ## Använda:
 
-Länka tjänstfilen med: `sudo systemctl link pihub.service`
+Länka tjänstfilen med: `sudo systemctl link $PWD/pihub.service`
 Starta samt sätt på autostart för tjänsten med: `sudo systemctl enable --now pihub.service`
