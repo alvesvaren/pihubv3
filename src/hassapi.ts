@@ -54,6 +54,10 @@ class Hass {
         });
     }
 
+    async send(domain: string, action: string, data: any = {}) {
+        return await this.hassClient?.callService(domain, action, data);
+    }
+
     // async getStates() {
 
     //     return await (await this.hassClient).getStates();

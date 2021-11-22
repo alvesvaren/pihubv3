@@ -3,8 +3,10 @@ import Card from "./Card";
 import "./widgets.scss";
 import config from "../config.json";
 import WeatherIcon, { getWindBearing } from "./WeatherIcon";
-import { useInterval } from "react-use";
+import { useEffectOnce, useInterval } from "react-use";
 import { useState } from "react";
+import WebLink from "./WebLink";
+import api from "../hassapi";
 
 export function Clock() {
     const date = useDate();
@@ -78,7 +80,10 @@ export function MediaPlayer() {
     const { state, attributes } = playerData ?? {};
     const { media_title, media_artist, entity_picture, media_duration, media_position, media_channel, media_position_updated_at } = attributes ?? {};
     useInterval(() => {
-        const currentRealPosition = media_position + (new Date().getTime() - new Date(media_position_updated_at).getTime()) / 1000;
+        const currentRealPosition =
+            media_position +
+            ((state === "playing" ? new Date().getTime() : new Date(media_position_updated_at).getTime()) - new Date(media_position_updated_at).getTime()) /
+                1000;
         setRealPosition(currentRealPosition);
     }, 200);
 
@@ -91,7 +96,10 @@ export function MediaPlayer() {
     const isLive = isNaN(realPosition) && media_duration === 0;
 
     return (
-        <Card className="no-padding media-player">
+        <Card
+            onClick={() => api.send("media_player", "media_play_pause", { entity_id: "media_player." + config.media_player_name })}
+            className="no-padding media-player"
+        >
             <img src={"//" + config.hass_connection.host + entity_picture} alt="" />
             <div className="media-info">
                 <header>
@@ -119,4 +127,36 @@ export function MediaPlayer() {
             </div>
         </Card>
     );
+}
+
+export function NewsFeed(props: { url: string }) {
+    const { url } = props;
+
+    const parser = new DOMParser();
+    const [news, setNews] = useState<string[][]>([]);
+    const fetchNews = async () => {
+        const resp = await fetch(url);
+        const doc = parser.parseFromString(await resp.text(), "text/xml");
+        setNews(
+            Array.from(doc.querySelectorAll("item"))
+                .map((item) =>
+                    [item.querySelector("title")?.textContent || null, item.querySelector("guid")?.textContent || null].filter((item) => item !== null)
+                )
+                .filter((item) => item.length > 0) as string[][]
+        );
+    };
+
+    useEffectOnce(() => {
+        const timeoutId = window.setInterval(fetchNews, 40000);
+        fetchNews();
+        return () => window.clearTimeout(timeoutId);
+    });
+    const index = Math.floor(Math.random() * news.length);
+    const article = news[index];
+    if (article) {
+        const [title, url] = article;
+        return <WebLink href={url}>{title}</WebLink>;
+    } else {
+        return <div></div>;
+    }
 }
