@@ -125,10 +125,10 @@ export function MediaPlayer(props: { entityId: string }) {
                     )}
                 </footer>
 
-                <svg className={classNames("pause-overlay", { hidden: state !== "playing" })} viewBox="0 0 64 64">
-                    <rect x="25%" y="25%" width="15%" height="50%" fill="white" />
-                    <rect x="60%" y="25%" width="15%" height="50%" fill="white" />
-                </svg>
+                <div className={classNames("pause-overlay", { hidden: state === "playing" })}>
+                    <div className="rect" />
+                    <div className="rect" />
+                </div>
             </div>
         </Card>
     );

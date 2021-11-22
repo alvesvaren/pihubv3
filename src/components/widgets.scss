@@ -116,8 +116,19 @@
             background-color: rgba(#000, 0.5);
             z-index: 100;
             height: 100%;
-            transition: all .3s;
+            transition-duration: .3s;
+            transition-property: opacity, transform;
             transform: scale(1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+
+            .rect {
+                width: 2.5rem;
+                height: 40%;
+                background-color: white;
+            }
         }
     }
 }
