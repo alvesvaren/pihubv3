@@ -145,7 +145,7 @@ export function NewsFeed(props: { url: string }) {
     };
 
     useEffectOnce(() => {
-        const timeoutId = window.setInterval(fetchNews, config.news_change_interval * 1000);
+        const timeoutId = window.setInterval(fetchNews, config.feed_change_interval * 1000);
         fetchNews();
         return () => window.clearTimeout(timeoutId);
     });
@@ -153,7 +153,12 @@ export function NewsFeed(props: { url: string }) {
     const article = news[index];
     if (article) {
         const [title, url] = article;
-        return <WebLink href={url}>{title}</WebLink>;
+        return (
+            <WebLink href={url}>
+                {title}
+                <span className="muted"> Expressen {config.feed_short_name}</span>
+            </WebLink>
+        );
     } else {
         return <div></div>;
     }
