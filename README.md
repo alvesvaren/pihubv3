@@ -1,1 +1,9 @@
 # Pihub v3
+
+Webbsida att visa på en raspberry pi touch screen som använder sig av home assistant för att hämta data och visa upp på skärmen.
+
+![Screenshot](screenshot.png)
+
+## Konfigurera:
+
+Kopiera `src/config-example.json` till `src/config.json` och ändra värdena i filen.
