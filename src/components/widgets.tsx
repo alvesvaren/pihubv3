@@ -7,6 +7,7 @@ import { useEffectOnce, useInterval } from "react-use";
 import { useState } from "react";
 import WebLink from "./WebLink";
 import api from "../hassapi";
+import classNames from "classnames";
 
 export function Clock() {
     const date = useDate();
@@ -116,12 +117,18 @@ export function MediaPlayer(props: { entityId: string }) {
                             </>
                         )}
                     </div>
+
                     {isLive || (
                         <div className="progress-container">
                             <div className="progress-bar" style={{ width: `${(realPosition / media_duration) * 100}%` }} />
                         </div>
                     )}
                 </footer>
+
+                <svg className={classNames("pause-overlay", { hidden: state !== "playing" })} viewBox="0 0 64 64">
+                    <rect x="25%" y="25%" width="15%" height="50%" fill="white" />
+                    <rect x="60%" y="25%" width="15%" height="50%" fill="white" />
+                </svg>
             </div>
         </Card>
     );
