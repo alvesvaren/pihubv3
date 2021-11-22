@@ -46,13 +46,19 @@ body {
     background-color: rgba(#fff4, 0.25);
     padding: 1rem;
     box-shadow: $default-shadow;
+    overflow: hidden;
 
-    .no-padding {
+    &.no-padding {
         padding: 0;
     }
 }
 
+img {
+    max-width: 100%;
+}
+
 .app-bar {
+    margin: 0 2rem;
     display: flex;
     justify-content: space-around;
     

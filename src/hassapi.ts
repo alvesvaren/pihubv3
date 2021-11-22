@@ -62,4 +62,6 @@ class Hass {
 
 const api = new Hass();
 
+(window as any).api = api;
+
 export default api;

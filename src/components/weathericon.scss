@@ -1,0 +1,23 @@
+.weather-icon {
+    width: 4rem;
+
+    .rain {
+        fill: #30b3ff;
+    }
+
+    .sun {
+        fill: #fdd93c;
+    }
+
+    .moon {
+        fill: #fcf497;
+    }
+
+    .cloud-back {
+        fill: #d4d4d4;
+    }
+
+    .cloud-front {
+        fill: #f9f9f9;
+    }
+}

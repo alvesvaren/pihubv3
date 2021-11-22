@@ -7,7 +7,7 @@ export function useDate() {
     useInterval(() => {
         setTimeout(() => {
             setDate(new Date());
-        }, 1000 - new Date().getMilliseconds());
+        }, 1001 - new Date().getMilliseconds());
     }, 1000);
     return date;
 }
