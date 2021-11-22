@@ -1,12 +1,10 @@
 import "./app.scss";
 import Card from "./components/Card";
 import { Clock, MediaPlayer, NewsFeed, Weather } from "./components/widgets";
-import MatlistanLogo from "./img/logos/matlistan_icon.png";
-import GrafanaLogo from "./img/logos/grafana_icon.png";
-import HomeAssistantLogo from "./img/logos/home_assistant_icon.svg";
 import WebOverlay, { OverlayContext } from "./components/Overlay";
 import { useState } from "react";
 import WebLink from "./components/WebLink";
+import config from "./config.json";
 interface AppData {
     name: string;
     imgUrl: string;
@@ -21,11 +19,7 @@ function AppIcon(props: { app: AppData }) {
     );
 }
 
-const apps: { [id: string]: AppData } = {
-    matlistan: { name: "Matlistan", imgUrl: MatlistanLogo, url: "https://www.matlistan.se/recipes" },
-    grafana: { name: "Grafana", imgUrl: GrafanaLogo, url: "https://grafana.svaren.dev" },
-    homeassistant: { name: "Home Assistant", imgUrl: HomeAssistantLogo, url: "https://ha.svaren.dev" },
-};
+const apps: { [id: string]: AppData } = config.apps;
 
 function App() {
     const [overlayUrl, setOverlayUrl] = useState<string>("");
@@ -44,7 +38,7 @@ function App() {
                             <AppIcon app={apps[appId]} key={appId} />
                         ))}
                         <div className="spacer" />
-                        <NewsFeed url="https://cors.svaren.dev/https://feeds.expressen.se/nyheter/" />
+                        <NewsFeed url={config.rss_source} />
                     </Card>
                 </div>
                 <WebOverlay url={overlayUrl} />
