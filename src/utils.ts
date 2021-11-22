@@ -1,6 +1,14 @@
+import config from "./config.json";
 import React from "react";
 import { useEffectOnce, useInterval } from "react-use";
 import api, { HassEntity } from "./hassapi";
+import svTranslation from "./translations/sv.json";
+import enTranslation from "./translations/en.json";
+
+const translations: { [lang: string]: { [key: string]: string } } = {
+    sv: svTranslation,
+    en: enTranslation,
+};
 
 export function useDate() {
     const [date, setDate] = React.useState(new Date());
@@ -42,4 +50,8 @@ export function getWeek(date: Date) {
     var week1 = new Date(_date.getFullYear(), 0, 4);
     // Adjust to Thursday in week 1 and count number of weeks from date to week1.
     return 1 + Math.round(((_date.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+}
+
+export function t(key: string) {
+    return translations[config.lang][key];
 }

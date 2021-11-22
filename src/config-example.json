@@ -12,5 +12,6 @@
         "grafana": { "name": "Grafana", "imgUrl": "/logos/grafana_icon.png", "url": "https://grafana.example.com" },
         "homeassistant": { "name": "Home Assistant", "imgUrl": "/logos/home_assistant_icon.svg", "url": "https://hass.example.com" }
     },
+    "lang": "en",
     "rss_source": "https://cors-proxy.example.com/https://news.example.com/rss"
 }

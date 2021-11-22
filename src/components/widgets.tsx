@@ -1,4 +1,4 @@
-import { getWeek, useDate, useHassDevice, zeroPad } from "../utils";
+import { getWeek, t, useDate, useHassDevice, zeroPad } from "../utils";
 import Card from "./Card";
 import "./widgets.scss";
 import config from "../config.json";
@@ -11,8 +11,8 @@ import api from "../hassapi";
 export function Clock() {
     const date = useDate();
 
-    const weekdays = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
-    const months = ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
+    const weekdays = [t("mon"), t("tue"), t("wed"), t("thu"), t("fri"), t("sat"), t("sun")];
+    const months = [t("jan"), t("feb"), t("mar"), t("apr"), t("may"), t("jun"), t("jul"), t("aug"), t("sep"), t("oct"), t("nov"), t("dec")];
 
     const [hours, minutes, seconds, weekday, day, month, year, week] = [
         date.getHours(),
@@ -51,19 +51,19 @@ export function Weather(props: { entityId: string }) {
             </div>
             <div className="weather-info">
                 <div>
-                    <span className="title">Högsta:</span>
+                    <span className="title">{t("max-temp")}:</span>
                     <span className="value">{today.temperature ?? "?"}°C</span>
                 </div>
                 <div>
-                    <span className="title">Lägsta:</span>
+                    <span className="title">{t("min-temp")}:</span>
                     <span className="value">{today.templow ?? "?"}°C</span>
                 </div>
                 <div>
-                    <span className="title">Luftfuktighet:</span>
+                    <span className="title">{t("humidity")}:</span>
                     <span className="value">{humidity ?? "?"}%</span>
                 </div>
                 <div>
-                    <span className="title">Vind:</span>
+                    <span className="title">{t("wind")}:</span>
                     <span className="value">
                         {wind_speed ?? "?"} km/h {getWindBearing(wind_bearing)}
                     </span>
@@ -107,7 +107,7 @@ export function MediaPlayer(props: { entityId: string }) {
                 <footer>
                     <div className="timestamps">
                         {isLive ? (
-                            <div className="position">Live</div>
+                            <div className="position">{t("live")}</div>
                         ) : (
                             <>
                                 <div className="position">{convertTime(Math.round(realPosition))}</div>
