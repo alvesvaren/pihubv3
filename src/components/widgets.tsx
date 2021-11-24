@@ -96,12 +96,14 @@ export function MediaPlayer(props: { entityId: string }) {
 
     const isLive = isNaN(realPosition) && media_duration === 0;
 
+    const hasSong = media_title || media_artist || media_channel || media_duration;
+
     return (
         <Card onClick={() => api.send("media_player", "media_play_pause", { entity_id: "media_player." + props.entityId })} className="no-padding media-player">
-            <img src={"//" + config.hass_connection.host + entity_picture} alt="" />
+            {entity_picture && <img src={"//" + config.hass_connection.host + entity_picture} alt="" />}
             <div className="media-info">
                 <header>
-                    <p className="title">{media_title || media_channel}</p>
+                    <p className="title">{media_title || media_channel || t("not-playing")}</p>
                     <p className="artist">{media_artist}</p>
                 </header>
 
@@ -111,8 +113,8 @@ export function MediaPlayer(props: { entityId: string }) {
                             <div className="position">{t("live")}</div>
                         ) : (
                             <>
-                                <div className="position">{convertTime(Math.round(realPosition))}</div>
-                                <div className="duration">{convertTime(media_duration)}</div>
+                                <div className="position">{convertTime(Math.round(realPosition || 0))}</div>
+                                <div className="duration">{convertTime(media_duration || 0)}</div>
                             </>
                         )}
                     </div>
@@ -124,10 +126,12 @@ export function MediaPlayer(props: { entityId: string }) {
                     )}
                 </footer>
 
-                <div className={classNames("pause-overlay", { hidden: state === "playing" })}>
-                    <div className="rect" />
-                    <div className="rect" />
-                </div>
+                {hasSong && (
+                    <div className={classNames("pause-overlay", { hidden: state === "playing" })}>
+                        <div className="rect" />
+                        <div className="rect" />
+                    </div>
+                )}
             </div>
         </Card>
     );

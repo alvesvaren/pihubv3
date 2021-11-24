@@ -28,6 +28,12 @@ class Hass {
     constructor() {
         this.emitter = new EventEmitter();
         this._createClient();
+
+        setInterval(async () => {
+            if (this.hassClient?.rawClient.ws.readyState > 1) {
+                await this._createClient();
+            }
+        }, 1000 * 10);
     }
 
     _convertStateArrayToMap(stateArray: HassEntity[]) {
@@ -40,7 +46,12 @@ class Hass {
     }
 
     async _createClient() {
-        this.hassClient = await hass({ token, ...config.hass_connection } as any);
+        try {
+            this.hassClient = await hass({ token, ...config.hass_connection as any });
+        } catch {
+            console.error("Could not create client!");
+            return;
+        }
 
         const initialState: HassEntity[] = await this.hassClient.getStates();
         this.state = this._convertStateArrayToMap(initialState);

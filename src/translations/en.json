@@ -6,5 +6,7 @@
     "max-temp": "High",
     "humidity": "Humidity",
     "wind": "Wind",
-    "live": "Live"
+    "live": "Live",
+    "not-playing": "Nothing is playing",
+    "offline": "Offline"
 }
