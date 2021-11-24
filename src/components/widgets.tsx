@@ -3,7 +3,7 @@ import Card from "./Card";
 import "./widgets.scss";
 import config from "../config.json";
 import WeatherIcon, { getWindBearing } from "./WeatherIcon";
-import { useEffectOnce, useInterval } from "react-use";
+import { useEffectOnce, useInterval, useNetworkState } from "react-use";
 import { useState } from "react";
 import WebLink from "./WebLink";
 import api from "../hassapi";
@@ -139,6 +139,7 @@ export function MediaPlayer(props: { entityId: string }) {
 
 export function NewsFeed(props: { url: string }) {
     const { url } = props;
+    const { online } = useNetworkState();
 
     const parser = new DOMParser();
     const [news, setNews] = useState<string[][]>([]);
@@ -165,7 +166,13 @@ export function NewsFeed(props: { url: string }) {
         const [title, url] = article;
         return (
             <WebLink href={url}>
-                {title} <span className="no-wrap muted">Expressen {config.feed_short_name}</span>
+                {online ? (
+                    <>
+                        {title} <span className="no-wrap muted">Expressen {config.feed_short_name}</span>
+                    </>
+                ) : (
+                    "Offline"
+                )}
             </WebLink>
         );
     } else {

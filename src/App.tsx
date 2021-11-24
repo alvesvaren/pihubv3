@@ -5,6 +5,9 @@ import WebOverlay, { OverlayContext } from "./components/Overlay";
 import { useState } from "react";
 import WebLink from "./components/WebLink";
 import config from "./config.json";
+import classNames from "classnames";
+import { useNetworkState } from "react-use";
+import { useHassDevice } from "./utils";
 interface AppData {
     name: string;
     imgUrl: string;
@@ -23,10 +26,14 @@ const apps: { [id: string]: AppData } = config.apps;
 
 function App() {
     const [overlayUrl, setOverlayUrl] = useState<string>("");
+    const { online } = useNetworkState();
+
+    const sun = useHassDevice("sun.sun");
+    const isSunUp = sun?.state === "above_horizon";
 
     return (
         <OverlayContext.Provider value={setOverlayUrl}>
-            <div id="app">
+            <div id="app" className={classNames({ offline: !online, dark: !isSunUp })}>
                 <div id="widget-grid">
                     <Clock />
                     <Weather entityId={config.weather_name} />

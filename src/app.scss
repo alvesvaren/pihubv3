@@ -20,15 +20,33 @@ body {
 }
 
 #app {
+    color: inherit;
     position: relative;
     font-size: 1.5rem;
     width: 50rem;
     height: 30rem;
     overflow: hidden;
-    background: linear-gradient(234.25deg, #ff00f51a 0%, #0000 70.93%), linear-gradient(79.8deg, #24ff001a 0%, #0000 92.37%),
-        linear-gradient(280.2deg, #001aff1a 0%, #0000 92.37%), linear-gradient(125.75deg, #f003 0%, #0000 70.93%), #000;
+    background: $app-background;
     display: flex;
     flex-direction: column;
+    outline: .6rem solid transparent;
+    outline-offset: -.5rem;
+    transition: outline 1s;
+
+    &.offline {
+        outline-color: red;
+    }
+
+
+    &::after {
+        transition: opacity $dark-fade-time;
+        content: "";
+        inset: 0;
+        opacity: 0;
+        background-color: black;
+        position: absolute;
+        pointer-events: none;
+    }
 }
 
 #widget-grid {
@@ -49,9 +67,22 @@ body {
     padding: 1rem;
     box-shadow: $default-shadow;
     overflow: hidden;
+    transition: background-color $dark-fade-time;
 
     &.no-padding {
         padding: 0;
+    }
+}
+
+#app.dark {
+    color: #ccc;
+
+    .card {
+        background-color: rgba(#5554, 0.25);
+    }
+
+    &::after {
+        opacity: .33;
     }
 }
 

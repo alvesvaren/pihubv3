@@ -1,1 +1,5 @@
-$default-shadow: 0 0 1rem rgba(#000, .10);
+$default-shadow: 0 0 1rem rgba(#000, 0.1);
+$app-background: linear-gradient(234.25deg, #ff00f51a 0%, #0000 70.93%), linear-gradient(79.8deg, #24ff001a 0%, #0000 92.37%),
+    linear-gradient(280.2deg, #001aff1a 0%, #0000 92.37%), linear-gradient(125.75deg, #f003 0%, #0000 70.93%), #000;
+
+$dark-fade-time: 5s;
