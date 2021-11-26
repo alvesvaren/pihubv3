@@ -7,7 +7,7 @@ import WebLink from "./components/WebLink";
 import config from "./config.json";
 import classNames from "classnames";
 import { useNetworkState } from "react-use";
-import { useHassDevice } from "./utils";
+import { useDate } from "./utils";
 interface AppData {
     name: string;
     imgUrl: string;
@@ -28,12 +28,42 @@ function App() {
     const [overlayUrl, setOverlayUrl] = useState<string>("");
     const { online } = useNetworkState();
 
-    const sun = useHassDevice("sun.sun");
-    const isSunUp = sun?.state === "above_horizon";
+    const date = useDate();
+    // console.log(date);
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+
+    const parseTimeStr = (timeStr: string): [number, number] => {
+        const [hours, minutes] = timeStr.split(":").map((x) => parseInt(x));
+        return [hours, minutes];
+    };
+
+    // check if the current time is between the given times
+    const isBetween = (timeStr1: string, timeStr2: string): boolean => {
+        const [time1, time2] = [timeStr1, timeStr2].map(parseTimeStr);
+
+        const oneDay = 24 * 60;
+        const start = time1[0] * 60 + time1[1];
+        let end = time2[0] * 60 + time2[1];
+        let current = hour * 60 + minute;
+
+        if (end < start) {
+            end += oneDay;
+
+            if (current < start) {
+                current += oneDay;
+            }
+        }
+
+        return current > start && current < end;
+    };
+
+    const [startDark, endDark] = config.dark_mode_interval;
+    const dark = isBetween(startDark, endDark);
 
     return (
         <OverlayContext.Provider value={setOverlayUrl}>
-            <div id="app" className={classNames({ offline: !online, dark: !isSunUp })}>
+            <div id="app" className={classNames({ offline: !online, dark })}>
                 <div id="widget-grid">
                     <Clock />
                     <Weather entityId={config.weather_name} />

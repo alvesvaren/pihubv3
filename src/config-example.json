@@ -15,5 +15,6 @@
     "lang": "en",
     "feed_change_interval": 30,
     "rss_source": "https://cors-proxy.example.com/https://news.example.com/rss",
-    "feed_short_name": "GT"
+    "feed_short_name": "GT",
+    "dark_mode_interval": ["22:00", "07:00"]
 }

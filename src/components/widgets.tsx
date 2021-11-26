@@ -3,7 +3,7 @@ import Card from "./Card";
 import "./widgets.scss";
 import config from "../config.json";
 import WeatherIcon, { getWindBearing } from "./WeatherIcon";
-import { useEffectOnce, useInterval, useNetworkState } from "react-use";
+import { useInterval, useMount, useNetworkState } from "react-use";
 import { useState } from "react";
 import WebLink from "./WebLink";
 import api from "../hassapi";
@@ -140,9 +140,11 @@ export function MediaPlayer(props: { entityId: string }) {
 export function NewsFeed(props: { url: string }) {
     const { url } = props;
     const { online } = useNetworkState();
+    const [newsIndex, setNewsIndex] = useState(0);
+    const [news, setNews] = useState<[string, string][]>([]);
 
     const parser = new DOMParser();
-    const [news, setNews] = useState<string[][]>([]);
+
     const fetchNews = async () => {
         const resp = await fetch(url);
         const doc = parser.parseFromString(await resp.text(), "text/xml");
@@ -151,17 +153,20 @@ export function NewsFeed(props: { url: string }) {
                 .map((item) =>
                     [item.querySelector("title")?.textContent || null, item.querySelector("guid")?.textContent || null].filter((item) => item !== null)
                 )
-                .filter((item) => item.length > 0) as string[][]
+                .filter((item) => item.length > 0) as [string, string][]
         );
     };
 
-    useEffectOnce(() => {
-        const timeoutId = window.setInterval(fetchNews, config.feed_change_interval * 1000);
+    useInterval(async () => {
+        await fetchNews();
+        setNewsIndex(Math.floor(Math.random() * news.length));
+    }, config.feed_change_interval * 1000);
+
+    useMount(() => {
         fetchNews();
-        return () => window.clearTimeout(timeoutId);
     });
-    const index = Math.floor(Math.random() * news.length);
-    const article = news[index];
+
+    const article = news[newsIndex];
     if (article) {
         const [title, url] = article;
         return (
