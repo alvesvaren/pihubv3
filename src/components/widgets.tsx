@@ -16,7 +16,7 @@ export function Clock() {
     const months = t("months");
 
     const [hours, minutes, seconds, weekday, day, month, year, week] = [
-        date.getHours(),
+        zeroPad(date.getHours()),
         zeroPad(date.getMinutes()),
         zeroPad(date.getSeconds()),
         weekdays[date.getDay()],
@@ -107,24 +107,26 @@ export function MediaPlayer(props: { entityId: string }) {
                     <p className="artist">{media_artist}</p>
                 </header>
 
-                <footer>
-                    <div className="timestamps">
-                        {isLive ? (
-                            <div className="position">{t("live")}</div>
-                        ) : (
-                            <>
-                                <div className="position">{convertTime(Math.round(realPosition || 0))}</div>
-                                <div className="duration">{convertTime(media_duration || 0)}</div>
-                            </>
-                        )}
-                    </div>
-
-                    {isLive || (
-                        <div className="progress-container">
-                            <div className="progress-bar" style={{ width: `${(realPosition / media_duration) * 100}%` }} />
+                {hasSong && (
+                    <footer>
+                        <div className="timestamps">
+                            {isLive ? (
+                                <div className="position">{t("live")}</div>
+                            ) : (
+                                <>
+                                    <div className="position">{convertTime(Math.round(realPosition || 0))}</div>
+                                    <div className="duration">{convertTime(media_duration || 0)}</div>
+                                </>
+                            )}
                         </div>
-                    )}
-                </footer>
+
+                        {isLive || (
+                            <div className="progress-container">
+                                <div className="progress-bar" style={{ width: `${(realPosition / media_duration) * 100}%` }} />
+                            </div>
+                        )}
+                    </footer>
+                )}
 
                 {hasSong && (
                     <div className={classNames("pause-overlay", { hidden: state === "playing" })}>
@@ -173,7 +175,7 @@ export function NewsFeed(props: { url: string }) {
             <WebLink href={url}>
                 {online ? (
                     <>
-                        {title} <span className="no-wrap muted">Expressen {config.feed_short_name}</span>
+                        {title} <span className="no-wrap muted">{config.feed_short_name}</span>
                     </>
                 ) : (
                     "Offline"
