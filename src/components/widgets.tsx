@@ -175,7 +175,8 @@ export function NewsFeed(props: { url: string }) {
             <WebLink href={url}>
                 {online ? (
                     <>
-                        {title} <span className="no-wrap muted">{config.feed_short_name}</span>
+                        {title}
+                        <span className="no-wrap muted"> {config.feed_short_name}</span>
                     </>
                 ) : (
                     "Offline"
