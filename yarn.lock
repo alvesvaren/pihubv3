@@ -5665,6 +5665,15 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
+homeassistant-react-hooks@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/homeassistant-react-hooks/-/homeassistant-react-hooks-0.1.0.tgz#cc280e616e4003813a6a93f33556d50e879589d9"
+  integrity sha512-POc0Zk7XcErEMm5nKvjmITrR8ZIlS3z7KOtJKMgjtaqhkzrEFo6J9LCRv0ARWruHAngUr5dOkfJWu0v3eDsy0Q==
+  dependencies:
+    events "^3.3.0"
+    homeassistant-ws "^0.2.2"
+    react-use "^17.3.1"
+
 homeassistant-ws@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/homeassistant-ws/-/homeassistant-ws-0.2.2.tgz#ff4676e997f6935c1c9a0592cdcd6b4e2e876706"

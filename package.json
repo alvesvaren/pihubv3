@@ -1,6 +1,6 @@
 {
     "name": "pihubv3",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "private": true,
     "dependencies": {
         "@testing-library/jest-dom": "^5.11.4",
@@ -14,6 +14,7 @@
         "@types/sass": "^1.43.0",
         "classnames": "^2.3.1",
         "events": "^3.3.0",
+        "homeassistant-react-hooks": "^0.1.0",
         "homeassistant-ws": "^0.2.2",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

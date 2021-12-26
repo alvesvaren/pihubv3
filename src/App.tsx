@@ -8,6 +8,7 @@ import config from "./config.json";
 import classNames from "classnames";
 import { useNetworkState } from "react-use";
 import { useDate } from "./utils";
+import { HassProvider } from "homeassistant-react-hooks";
 interface AppData {
     name: string;
     imgUrl: string;
@@ -16,7 +17,7 @@ interface AppData {
 
 function AppIcon(props: { app: AppData }) {
     return (
-        <WebLink className="app-icon" href={props.app.url}>
+        <WebLink className='app-icon' href={props.app.url}>
             <img src={props.app.imgUrl} alt={props.app.name + " logo"} />
         </WebLink>
     );
@@ -34,7 +35,7 @@ function App() {
     const minute = date.getMinutes();
 
     const parseTimeStr = (timeStr: string): [number, number] => {
-        const [hours, minutes] = timeStr.split(":").map((x) => parseInt(x));
+        const [hours, minutes] = timeStr.split(":").map(x => parseInt(x));
         return [hours, minutes];
     };
 
@@ -63,23 +64,25 @@ function App() {
 
     return (
         <OverlayContext.Provider value={setOverlayUrl}>
-            <div id="app" className={classNames({ offline: !online, dark })}>
-                <div id="widget-grid">
-                    <Clock />
-                    <Weather entityId={config.weather_name} />
-                    <MediaPlayer entityId={config.media_player_name} />
+            <HassProvider token={config.hass_token} connectionOptions={config.hass_connection as any}>
+                <div id='app' className={classNames({ offline: !online, dark })}>
+                    <div id='widget-grid'>
+                        <Clock />
+                        <Weather entityId={config.weather_name} />
+                        <MediaPlayer entityId={config.media_player_name} />
+                    </div>
+                    <div className='app-bar'>
+                        <Card className='app-bar-card'>
+                            {Object.keys(apps).map(appId => (
+                                <AppIcon app={apps[appId]} key={appId} />
+                            ))}
+                            <div className='spacer' />
+                            <NewsFeed url={config.rss_source} />
+                        </Card>
+                    </div>
+                    <WebOverlay url={overlayUrl} />
                 </div>
-                <div className="app-bar">
-                    <Card className="app-bar-card">
-                        {Object.keys(apps).map((appId) => (
-                            <AppIcon app={apps[appId]} key={appId} />
-                        ))}
-                        <div className="spacer" />
-                        <NewsFeed url={config.rss_source} />
-                    </Card>
-                </div>
-                <WebOverlay url={overlayUrl} />
-            </div>
+            </HassProvider>
         </OverlayContext.Provider>
     );
 }

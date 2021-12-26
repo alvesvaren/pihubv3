@@ -1,13 +1,13 @@
-import { getWeek, t, useDate, useHassDevice, zeroPad } from "../utils";
+import { getWeek, t, useDate, zeroPad } from "../utils";
 import Card from "./Card";
 import "./widgets.scss";
 import config from "../config.json";
 import WeatherIcon, { getWindBearing } from "./WeatherIcon";
 import { useInterval, useMount, useNetworkState } from "react-use";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import WebLink from "./WebLink";
-import api from "../hassapi";
 import classNames from "classnames";
+import { HassContext, useHassDevice } from "homeassistant-react-hooks";
 
 export function Clock() {
     const date = useDate();
@@ -27,7 +27,7 @@ export function Clock() {
     ];
 
     return (
-        <div className="clock">
+        <div className='clock'>
             <h1>
                 {hours}:{minutes}:{seconds}
             </h1>
@@ -45,27 +45,27 @@ export function Weather(props: { entityId: string }) {
     const today = forecast?.[0] ?? {};
 
     return (
-        <Card className="weather">
-            <div className="current-weather">
+        <Card className='weather'>
+            <div className='current-weather'>
                 <WeatherIcon state={weatherData?.state || ""} />
                 {temperature}°
             </div>
-            <div className="weather-info">
+            <div className='weather-info'>
                 <div>
-                    <span className="title">{t("max-temp")}:</span>
-                    <span className="value">{today.temperature ?? "?"}°C</span>
+                    <span className='title'>{t("max-temp")}:</span>
+                    <span className='value'>{today.temperature ?? "?"}°C</span>
                 </div>
                 <div>
-                    <span className="title">{t("min-temp")}:</span>
-                    <span className="value">{today.templow ?? "?"}°C</span>
+                    <span className='title'>{t("min-temp")}:</span>
+                    <span className='value'>{today.templow ?? "?"}°C</span>
                 </div>
                 <div>
-                    <span className="title">{t("humidity")}:</span>
-                    <span className="value">{humidity ?? "?"}%</span>
+                    <span className='title'>{t("humidity")}:</span>
+                    <span className='value'>{humidity ?? "?"}%</span>
                 </div>
                 <div>
-                    <span className="title">{t("wind")}:</span>
-                    <span className="value">
+                    <span className='title'>{t("wind")}:</span>
+                    <span className='value'>
                         {wind_speed ?? "?"} km/h {getWindBearing(wind_bearing)}
                     </span>
                 </div>
@@ -94,35 +94,40 @@ export function MediaPlayer(props: { entityId: string }) {
         return `${minutes}:${zeroPad(seconds)}`;
     };
 
+    const api = useContext(HassContext);
+
     const isLive = isNaN(realPosition) && media_duration === 0;
 
     const hasSong = media_title || media_artist || media_channel || media_duration;
 
     return (
-        <Card onClick={() => api.send("media_player", "media_play_pause", { entity_id: "media_player." + props.entityId })} className="no-padding media-player">
-            {entity_picture && <img src={"//" + config.hass_connection.host + entity_picture} alt="" />}
-            <div className="media-info">
+        <Card
+            onClick={() => api?.send("media_player", "media_play_pause", { entity_id: "media_player." + props.entityId })}
+            className='no-padding media-player'
+        >
+            {entity_picture && <img src={"//" + config.hass_connection.host + entity_picture} alt='' />}
+            <div className='media-info'>
                 <header>
-                    <p className="title">{media_title || media_channel || t("not-playing")}</p>
-                    <p className="artist">{media_artist}</p>
+                    <p className='title'>{media_title || media_channel || t("not-playing")}</p>
+                    <p className='artist'>{media_artist}</p>
                 </header>
 
                 {hasSong && (
                     <footer>
-                        <div className="timestamps">
+                        <div className='timestamps'>
                             {isLive ? (
-                                <div className="position">{t("live")}</div>
+                                <div className='position'>{t("live")}</div>
                             ) : (
                                 <>
-                                    <div className="position">{convertTime(Math.round(realPosition || 0))}</div>
-                                    <div className="duration">{convertTime(media_duration || 0)}</div>
+                                    <div className='position'>{convertTime(Math.round(realPosition || 0))}</div>
+                                    <div className='duration'>{convertTime(media_duration || 0)}</div>
                                 </>
                             )}
                         </div>
 
                         {isLive || (
-                            <div className="progress-container">
-                                <div className="progress-bar" style={{ width: `${(realPosition / media_duration) * 100}%` }} />
+                            <div className='progress-container'>
+                                <div className='progress-bar' style={{ width: `${(realPosition / media_duration) * 100}%` }} />
                             </div>
                         )}
                     </footer>
@@ -130,8 +135,8 @@ export function MediaPlayer(props: { entityId: string }) {
 
                 {hasSong && (
                     <div className={classNames("pause-overlay", { hidden: state === "playing" })}>
-                        <div className="rect" />
-                        <div className="rect" />
+                        <div className='rect' />
+                        <div className='rect' />
                     </div>
                 )}
             </div>
@@ -152,10 +157,8 @@ export function NewsFeed(props: { url: string }) {
         const doc = parser.parseFromString(await resp.text(), "text/xml");
         setNews(
             Array.from(doc.querySelectorAll("item"))
-                .map((item) =>
-                    [item.querySelector("title")?.textContent || null, item.querySelector("guid")?.textContent || null].filter((item) => item !== null)
-                )
-                .filter((item) => item.length > 0) as [string, string][]
+                .map(item => [item.querySelector("title")?.textContent || null, item.querySelector("guid")?.textContent || null].filter(item => item !== null))
+                .filter(item => item.length > 0) as [string, string][]
         );
     };
 
@@ -176,7 +179,7 @@ export function NewsFeed(props: { url: string }) {
                 {online ? (
                     <>
                         {title}
-                        <span className="no-wrap muted"> {config.feed_short_name}</span>
+                        <span className='no-wrap muted'> {config.feed_short_name}</span>
                     </>
                 ) : (
                     "Offline"
