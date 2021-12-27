@@ -4,10 +4,10 @@ import "./widgets.scss";
 import config from "../config.json";
 import WeatherIcon, { getWindBearing } from "./WeatherIcon";
 import { useInterval, useMount, useNetworkState } from "react-use";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import WebLink from "./WebLink";
 import classNames from "classnames";
-import { HassContext, useHassDevice } from "homeassistant-react-hooks";
+import { useMediaPlayer, useWeather } from "homeassistant-react-hooks";
 
 export function Clock() {
     const date = useDate();
@@ -39,15 +39,12 @@ export function Clock() {
 }
 
 export function Weather(props: { entityId: string }) {
-    const weatherData = useHassDevice("weather." + props.entityId);
-
-    const { humidity, temperature, wind_speed, wind_bearing, forecast } = weatherData?.attributes ?? {};
-    const today = forecast?.[0] ?? {};
+    const { humidity, temperature, today, wind_bearing, wind_speed, state } = useWeather(props.entityId);
 
     return (
         <Card className='weather'>
             <div className='current-weather'>
-                <WeatherIcon state={weatherData?.state || ""} />
+                <WeatherIcon state={state || ""} />
                 {temperature}°
             </div>
             <div className='weather-info'>
@@ -75,18 +72,7 @@ export function Weather(props: { entityId: string }) {
 }
 
 export function MediaPlayer(props: { entityId: string }) {
-    const [realPosition, setRealPosition] = useState(0);
-    const playerData = useHassDevice("media_player." + props.entityId);
-
-    const { state, attributes } = playerData ?? {};
-    const { media_title, media_artist, entity_picture, media_duration, media_position, media_channel, media_position_updated_at } = attributes ?? {};
-    useInterval(() => {
-        const currentRealPosition =
-            media_position +
-            ((state === "playing" ? new Date().getTime() : new Date(media_position_updated_at).getTime()) - new Date(media_position_updated_at).getTime()) /
-                1000;
-        setRealPosition(currentRealPosition);
-    }, 200);
+    const { isPlaying, imgUrl, togglePause, isLive, hasSong, artist, channel, duration, title, position } = useMediaPlayer(props.entityId);
 
     const convertTime = (time: number) => {
         const minutes = Math.floor(time / 60);
@@ -94,22 +80,13 @@ export function MediaPlayer(props: { entityId: string }) {
         return `${minutes}:${zeroPad(seconds)}`;
     };
 
-    const api = useContext(HassContext);
-
-    const isLive = isNaN(realPosition) && media_duration === 0;
-
-    const hasSong = media_title || media_artist || media_channel || media_duration;
-
     return (
-        <Card
-            onClick={() => api?.send("media_player", "media_play_pause", { entity_id: "media_player." + props.entityId })}
-            className='no-padding media-player'
-        >
-            {entity_picture && <img src={"//" + config.hass_connection.host + entity_picture} alt='' />}
+        <Card onClick={togglePause} className='no-padding media-player'>
+            {imgUrl && <img src={imgUrl} alt='' />}
             <div className='media-info'>
                 <header>
-                    <p className='title'>{media_title || media_channel || t("not-playing")}</p>
-                    <p className='artist'>{media_artist}</p>
+                    <p className='title'>{title || channel || t("not-playing")}</p>
+                    <p className='artist'>{artist}</p>
                 </header>
 
                 {hasSong && (
@@ -119,22 +96,22 @@ export function MediaPlayer(props: { entityId: string }) {
                                 <div className='position'>{t("live")}</div>
                             ) : (
                                 <>
-                                    <div className='position'>{convertTime(Math.round(realPosition || 0))}</div>
-                                    <div className='duration'>{convertTime(media_duration || 0)}</div>
+                                    <div className='position'>{convertTime(Math.round(position || 0))}</div>
+                                    <div className='duration'>{convertTime(duration || 0)}</div>
                                 </>
                             )}
                         </div>
 
                         {isLive || (
                             <div className='progress-container'>
-                                <div className='progress-bar' style={{ width: `${(realPosition / media_duration) * 100}%` }} />
+                                <div className='progress-bar' style={{ width: `${(position / duration) * 100}%` }} />
                             </div>
                         )}
                     </footer>
                 )}
 
                 {hasSong && (
-                    <div className={classNames("pause-overlay", { hidden: state === "playing" })}>
+                    <div className={classNames("pause-overlay", { hidden: isPlaying })}>
                         <div className='rect' />
                         <div className='rect' />
                     </div>
