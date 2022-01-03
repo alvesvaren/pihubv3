@@ -23,14 +23,10 @@ function AppIcon(props: { app: AppData }) {
     );
 }
 
-const apps: { [id: string]: AppData } = config.apps;
-
-function App() {
-    const [overlayUrl, setOverlayUrl] = useState<string>("");
-    const { online } = useNetworkState();
-
+const useShouldBeDark = () => {
+    const [startDark, endDark] = config.dark_mode_interval;
     const date = useDate();
-    // console.log(date);
+
     const hour = date.getHours();
     const minute = date.getMinutes();
 
@@ -39,7 +35,6 @@ function App() {
         return [hours, minutes];
     };
 
-    // check if the current time is between the given times
     const isBetween = (timeStr1: string, timeStr2: string): boolean => {
         const [time1, time2] = [timeStr1, timeStr2].map(parseTimeStr);
 
@@ -59,8 +54,16 @@ function App() {
         return current > start && current < end;
     };
 
-    const [startDark, endDark] = config.dark_mode_interval;
-    const dark = isBetween(startDark, endDark);
+    // check if the current time is between the given times
+    return isBetween(startDark, endDark);
+};
+
+const apps: { [id: string]: AppData } = config.apps;
+
+function App() {
+    const [overlayUrl, setOverlayUrl] = useState<string>("");
+    const { online } = useNetworkState();
+    const dark = useShouldBeDark();
 
     return (
         <OverlayContext.Provider value={setOverlayUrl}>
