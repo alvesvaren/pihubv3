@@ -137,6 +137,9 @@ button {
 }
 
 #web-overlay {
+    &:not(.visible) {
+        display: none;
+    }
     padding-top: 1rem;
     position: absolute;
     inset: 0;

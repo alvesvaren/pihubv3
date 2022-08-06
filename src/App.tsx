@@ -15,6 +15,11 @@ interface AppData {
     url: string;
 }
 
+export interface OverlayData {
+    url: string;
+    visible: boolean;
+}
+
 function AppIcon(props: { app: AppData }) {
     return (
         <WebLink className='app-icon' href={props.app.url}>
@@ -61,12 +66,12 @@ const useShouldBeDark = () => {
 const apps: { [id: string]: AppData } = config.apps;
 
 function App() {
-    const [overlayUrl, setOverlayUrl] = useState<string>("");
+    const [overlayData, setOverlayData] = useState<OverlayData>({ url: "", visible: false });
     const { online } = useNetworkState();
     const dark = useShouldBeDark();
 
     return (
-        <OverlayContext.Provider value={setOverlayUrl}>
+        <OverlayContext.Provider value={setOverlayData}>
             <HassProvider token={config.hass_token} connectionOptions={config.hass_connection as any}>
                 <div id='app' className={classNames({ offline: !online, dark })}>
                     <div id='widget-grid'>
@@ -83,7 +88,7 @@ function App() {
                             <NewsFeed url={config.rss_source} />
                         </Card>
                     </div>
-                    <WebOverlay url={overlayUrl} />
+                    <WebOverlay data={overlayData} />
                 </div>
             </HassProvider>
         </OverlayContext.Provider>

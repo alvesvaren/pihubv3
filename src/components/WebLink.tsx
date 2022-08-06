@@ -5,7 +5,7 @@ export default function WebLink(props: { href: string; children: React.ReactNode
     const setOverlay = React.useContext(OverlayContext);
 
     return (
-        <span className={props.className} onClick={() => setOverlay(props.href)}>
+        <span className={props.className} onClick={() => setOverlay({ url: props.href, visible: true })}>
             {props.children}
         </span>
     );
