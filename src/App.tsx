@@ -1,6 +1,6 @@
 import "./app.scss";
 import Card from "./components/Card";
-import { Clock, MediaPlayer, NewsFeed, Weather } from "./components/widgets";
+import { Clock, MediaPlayer, Weather } from "./components/widgets";
 import WebOverlay, { OverlayContext } from "./components/Overlay";
 import { useState } from "react";
 import WebLink from "./components/WebLink";
@@ -9,6 +9,7 @@ import classNames from "classnames";
 import { useNetworkState } from "react-use";
 import { useDate } from "./utils";
 import { HassProvider } from "homeassistant-react-hooks";
+import BoilerStatus from "./components/BoilerStatus";
 interface AppData {
     name: string;
     imgUrl: string;
@@ -85,7 +86,8 @@ function App() {
                                 <AppIcon app={apps[appId]} key={appId} />
                             ))}
                             <div className='spacer' />
-                            <NewsFeed url={config.rss_source} />
+                            {/* <NewsFeed url={config.rss_source} /> */}
+                            <BoilerStatus />
                         </Card>
                     </div>
                     <WebOverlay data={overlayData} />
