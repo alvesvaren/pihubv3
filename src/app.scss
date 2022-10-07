@@ -39,11 +39,11 @@ body {
 
 
     &::after {
-        transition: opacity $dark-fade-time;
+        transition-property: background-color, backdrop-filter;
+        transition-duration: $dark-fade-time;
         content: "";
         inset: 0;
-        opacity: 0;
-        background-color: black;
+        background-color: #0000;
         position: absolute;
         pointer-events: none;
     }
@@ -82,7 +82,9 @@ body {
     }
 
     &::after {
-        opacity: .4;
+        opacity: 1;
+        background-color: rgba(#000, 0.4);
+        backdrop-filter: grayscale(50%) sepia(50%);
     }
 }
 
