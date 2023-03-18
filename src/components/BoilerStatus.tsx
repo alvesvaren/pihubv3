@@ -16,19 +16,19 @@ const TempIcon = () => (
 );
 
 const BoilerStatus: React.FC<BoilerStatusProps> = props => {
-    const temp = useHassDevice("sensor.boiler_water_temperature")?.state;
-    const pellet_percent = useHassDevice("sensor.pelletsniva")?.state;
+    const temp = Math.floor(+(useHassDevice("sensor.vattentemperatur")?.state || NaN));
+    const pelletPercent = Math.floor(+(useHassDevice("sensor.pelletsniva")?.state || NaN));
 
     return (
         <div className='boiler-status'>
             Panna:
             <span>
                 <TempIcon />
-                {temp ? Math.floor(+temp) : "?"}°C
+                {isNaN(temp) || !temp ? "?" : temp}°C
             </span>
             <span>
                 <LevelIcon />
-                {pellet_percent ? Math.floor(+pellet_percent) : "?"}%
+                {isNaN(pelletPercent) || !pelletPercent ? "?" : pelletPercent}%
             </span>
         </div>
     );
