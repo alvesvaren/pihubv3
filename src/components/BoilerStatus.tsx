@@ -16,7 +16,7 @@ const TempIcon = () => (
 );
 
 const BoilerStatus: React.FC<BoilerStatusProps> = props => {
-    const temp = Math.floor(+(useHassDevice("sensor.vattentemperatur")?.state || NaN));
+    const temp = Math.floor(+(useHassDevice("sensor.vattentemperatur_2")?.state || NaN));
     const pelletPercent = Math.floor(+(useHassDevice("sensor.pelletsniva")?.state || NaN));
 
     return (
