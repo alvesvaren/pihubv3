@@ -1,13 +1,16 @@
 import { useHassDevice } from "homeassistant-react-hooks";
 import React from "react";
 
-export interface BoilerStatusProps {}
 
-const LevelIcon = () => (
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' width='1em' height='1em' fill='currentColor'>
-        <path d='m24 43.2-9.8-9.75L17.65 30l4 4.05v-20.1l-4 4.05-3.45-3.45L24 4.8l9.8 9.75L30.35 18l-4-4.05v20.1l4-4.05 3.45 3.45Z' />
-    </svg>
-);
+// const LevelIcon = () => (
+//     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' width='1em' height='1em' fill='currentColor'>
+//         <path d='m24 43.2-9.8-9.75L17.65 30l4 4.05v-20.1l-4 4.05-3.45-3.45L24 4.8l9.8 9.75L30.35 18l-4-4.05v20.1l4-4.05 3.45 3.45Z' />
+//     </svg>
+// );
+
+const SackIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="mdi-sack" width="1em" height="1em" viewBox="0 0 24 24" fill='currentColor'><path d="M16,9C20,11 21,18 21,18C21,18 22,22 16,22C10,22 8,22 8,22C2,22 3,18 3,18C3,18 4,11 8,9M14,4L12,2L10,4L6,2L8,7H16L18,2L14,4Z" /></svg>
+)
 
 const TempIcon = () => (
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' width='1em' height='1em' fill='currentColor'>
@@ -15,9 +18,9 @@ const TempIcon = () => (
     </svg>
 );
 
-const BoilerStatus: React.FC<BoilerStatusProps> = props => {
-    const temp = Math.floor(+(useHassDevice("sensor.vattentemperatur_2")?.state || NaN));
-    const pelletPercent = Math.floor(+(useHassDevice("sensor.pelletsniva")?.state || NaN));
+const BoilerStatus: React.FC = () => {
+    const temp = Math.floor(+(useHassDevice("sensor.vattentemperatur_2")?.state ?? NaN));
+    const pelletPercent = Math.floor(+(useHassDevice("sensor.boiler_v2_pelletssckar")?.state ?? NaN));
 
     return (
         <div className='boiler-status'>
@@ -27,8 +30,8 @@ const BoilerStatus: React.FC<BoilerStatusProps> = props => {
                 {isNaN(temp) || !temp ? "?" : temp}°C
             </span>
             <span>
-                <LevelIcon />
-                {isNaN(pelletPercent) || !pelletPercent ? "?" : pelletPercent}%
+                <SackIcon />
+                {isNaN(pelletPercent) || !(pelletPercent >= 0) ? "?" : pelletPercent} st
             </span>
         </div>
     );
